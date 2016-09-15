@@ -59,7 +59,7 @@ func planetDescription(planet: String) {
 Do you remember how to call a function with an argument? Go ahead and try calling `planetDescription` in your playground file. If you need help, here's how you call a function that takes an argument:
 
 ```swift
-planetDescription("Jupiter")
+planetDescription(planet: "Jupiter")
 ```
 
 Do you see "There are 67 moons orbiting Jupiter." printed to your console? Excellent!
@@ -70,7 +70,7 @@ What happens when you call `planetDescription` with "Mars" as an argument?
 
 ```swift
 var planet = "Mars"
-planetDescription(planet)
+planetDescription(planet: planet)
 ```
 
 Did you see "There are 67 moons orbiting Mars." in your console?
@@ -91,9 +91,9 @@ func greet(name: String, greeting: String) {
 
 Notice that in the body of the function, arguments are still referred to by the name you specify in the argument list, even when you specify more than one. Easy!
 
-Now that you know how to specify multiple arguments, how can you adapt `planetDescription()` to take both a planet name and its number of moons? Try it out in your playground!
+Now that you know how to specify multiple arguments, how can you adapt `planetDescription(planet:)` to take both a planet name and its number of moons? Try it out in your playground!
 
-In case you got stuck, here's what `planetDescription()` should look like now:
+In case you got stuck, here's what `planetDescription` should look like now:
 
 ```swift
 func planetDescription(planet: String, numberOfMoons: Int) {
@@ -106,7 +106,7 @@ Great! Now, how do you call that function?
 Since `planetDescription` now takes more than one argument, you have to specify _all_ the arguments when calling the function. If you only specify one, you will get an error. Give it a try! Swift will report an error if you only call `planetDescription` with one argument:
 
 ```swift
-planetDescription("Jupiter")  // This is an error!
+planetDescription(planet: "Jupiter")  // This is an error!
 ```
 
 Since you specify multiple arguments using a comma-separated list, you may be tempted to call `planetDescription` with multiple arguments, like this:
@@ -115,25 +115,25 @@ Since you specify multiple arguments using a comma-separated list, you may be te
 planetDescription("Jupiter", 67)
 ```
 
-Try that in your playground file. It won't work! This shows one of the oddities of Swift: When calling a function with multiple arguments, you have to specify the name of the argument for the second (and subsequent) arguments, using the same name specified in the function definition. It looks a little weird, but you call `planetDescription` like this:
+Try that in your playground file. It won't work!
+
+You can't exclude the names of the arguments when calling on a function! Below is the correct way to call on this function.
 
 ```swift
-planetDescription("Jupiter", numberOfMoons: 67)
+planetDescription(planet: "Jupiter", numberOfMoons: 67)
 ```
-
-See how the second argument is named? `numberOfMoons` is the same name used in the function definition.
 
 Try calling `planetDescription` in different ways. Recall that you can pass variables into a function when you call it—even if the function takes more than one argument. Try impressing Neil DeGrasse Tyson with your knowledge of our solar system! Here's how you can call a function with multiple arguments using variables:
 
 ```swift
 var planet = "Jupiter"
 var moons = 67
-planetDescription(planet, numberOfMoons: moons)
+planetDescription(planet: planet, numberOfMoons: moons)
 // prints "There are 67 moons orbiting Jupiter"
 
 planet = "Mars"
 moons = 2
-planetDescription(planet, numberOfMoons: moons)
+planetDescription(planet: planet, numberOfMoons: moons)
 // prints "There are 2 moons orbiting Mars"
 ```
 
@@ -154,14 +154,14 @@ func theBestFunction(firstParameterName: String, secondParameterName: String) {
 ```
 
 ```swift
-theBestFunction("Brick", secondParameterName: "Oven")
+theBestFunction(firstParameterName: "Brick", secondParameterName: "Oven")
 ```
 
-The name of this function is `theBestFunction` and it takes in two arguments, both of which are of type `String`. If you notice that when we call the function, the first parameter omits its external name, and the second (and any subsequent) parameters use their local name as their external name.
+The name of this function is `theBestFunction` and it takes in two arguments, both of which are of type `String`. If you notice that when we call the function, the first parameter and the second (and any subsequent) parameters use their local name as their external name.
 
 If I were to describe this function to you, I would type it out like this:
 
-`theBestFunction(_:secondParameterName)`
+`theBestFunction(firstParameterName:secondParameterName)`
 
 The reason we _describe_ the function like that, is because when writing out our function to someone in text, we write out the name followed by `( )` -- within those parenthesis are all the external names followed by a colon `:`. How do we denote that there isn't an external name? We do so with the `_` underbar. 
 
@@ -171,44 +171,7 @@ The local name of an argument is how you refer to the argument within the implem
 `theBestFunction`
 
 **First Argument**  
-External Name = `_`  
-Local Name = `firstParameterName` 
-
-**Second Argument**  
-External Name = `secondParameterName`  
-Local Name = `secondParameterName`
-
----
-
-What if you wanted to have an External Name for the first argument, we can fix that problem like so:
-
-```swift
-func theBestFunction(externalNameForFirst firstParameterName: String, secondParameterName: String) {
-    
-    print(firstParameterName)
-    print(secondParameterName)
-    
-}
-```
-
-```swift
-theBestFunction(externalNameForFirst: "Brick", secondParameterName: "Oven")
-
-/* Prints
- Brick
- Oven 
- */
- ```
- 
-Lets run through our breakdown again, first typing out the description of this function:
-
-`theBestFunction(externalNameForFirst:secondParameterName:)`
-
-**Name of function**  
-`theBestFunction`
-
-**First Argument**  
-External Name = `externalNameForFirst`  
+External Name = `firstParameterName`  
 Local Name = `firstParameterName` 
 
 **Second Argument**  
@@ -220,7 +183,7 @@ Local Name = `secondParameterName`
 What if we wanted to create a function with NO External Names, can we do that? Yes.
 
 ```swift
-func theBestFunction(firstParameterName: String, _ secondParameterName: String, _ thirdParameterName: String, _ fourthParameterName: String) {
+func theBestFunction(_ firstParameterName: String, _ secondParameterName: String, _ thirdParameterName: String, _ fourthParameterName: String) {
     
     print(firstParameterName)
     print(secondParameterName)
@@ -234,7 +197,7 @@ If we wanted to type out the description of this function, it would look like th
 
 `theBestFunction(_:_:_:_:)`
 
-When typing out the description, you only include the external names . The first argument always defaults to having no external name. The second and subsequent arguments, if we wanted for them to have NO external name, we have to add the _ before the local name. We always need to have a local name because we need to be able to refer to that argument within the implementation of our function.
+When typing out the description, you only include the external names . The first, second and any subsequent arguments, if we wanted for them to have NO external name, we have to add the _ before the local name. We always need to have a local name because we need to be able to refer to that argument within the implementation of our function.
 
 ```swift
 theBestFunction("Hello", "To", "You", "Marty")
