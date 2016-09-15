@@ -12,11 +12,11 @@ func planetDescription(planet: String) {
     print("There are 67 moons orbiting \(planet).")
 }
 
-planetDescription("Jupiter")
+planetDescription(planet: "Jupiter")
 
 var planet = "Mars"
 
-planetDescription(planet)
+planetDescription(planet: planet)
 */
 
 
